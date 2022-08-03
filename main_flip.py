@@ -62,7 +62,7 @@ with center_col:
 with col2:
     if pmt_status == 'Paid':
         try:
-            st.title(f'You have selected {pmt_status} Status, and payment method {paymt_method}')
+            st.markdown(f'## You have selected {pmt_status} Status, and payment method {paymt_method}')
             st.warning('Be sure all the information is correct before submitting.')
             submit_to_paid = st.button('Submit to Paid')
             if submit_to_paid:
@@ -72,7 +72,7 @@ with col2:
             st.write('Error, reach out to admin')
     else:
         try:
-            st.title(f'You have selected {pmt_status} Status.')
+            st.markdown(f'## You have selected {pmt_status} Status.')
             st.warning('Be sure all the information is correct before submitting.')
             submit = st.button('Submit to Remitted')
             if submit:
