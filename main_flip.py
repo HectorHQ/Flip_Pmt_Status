@@ -14,7 +14,7 @@ with col1:
     if file is not None:
         df = pd.read_excel(file,engine='openpyxl')
         df['Invoice'] = df['Invoice'].astype('str') 
-        count_invoices = int(df['Invoice'].value_counts())
+        count_invoices = df['Invoice'].value_counts()
         df[['GMV_Collected','TAX_Collected']] = df[['GMV_Collected','TAX_Collected']].astype('float')
         st.write(f'{count_invoices} Invoices to Flip')
         
