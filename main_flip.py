@@ -15,9 +15,9 @@ with col1:
         df = pd.read_excel(file,engine='openpyxl')
         df['Invoice'] = df['Invoice'].astype('str')
         df[['GMV_Collected','TAX_Collected']].fillna(0,inplace=True)
-        count_invoices = df['Invoice'].counts()
+        count_invoices = df.shape
         df[['GMV_Collected','TAX_Collected']] = df[['GMV_Collected','TAX_Collected']].astype('float')
-        st.write(f'{count_invoices} Invoices to Flip')
+        st.write(f'{count_invoices[0]} Invoices to Flip')
         
     pmt_status = st.radio('Select Payment Status',options=['Paid','Remitted','Partial Paid'],index=1)
     if pmt_status == 'Paid':
