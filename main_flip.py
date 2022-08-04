@@ -38,6 +38,8 @@ def flip_to_paid(headers,list_orders,pmt_method):
             UpdateOrder_COD_PAID(headers,qb_invoice_data)
         else:    
             UpdateOrder_NET_TERMS_PAID(headers,qb_invoice_data)
+    
+    st.success('Done!')        
   
 
 def flip_to_remitted(headers,list_orders):
@@ -52,6 +54,8 @@ def flip_to_remitted(headers,list_orders):
         st.write(f'{order}{"  "}{" Order Processed "} ')
         UpdateOrder_REMITTED(headers,qb_invoice_data)
 
+    st.success('Done!')    
+        
 st.markdown('---')
 left_col,center_col,right_col = st.columns(3)
 
