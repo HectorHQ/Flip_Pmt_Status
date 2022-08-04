@@ -13,7 +13,7 @@ with col1:
     file = st.file_uploader('Upload list of invoices')
     if file is not None:
         df = pd.read_excel(file,engine='openpyxl')
-        df[['Invoice','Payment Status']] = df[['Invoice','Payment Status']].astype('str') 
+        df['Invoice'] = df['Invoice'].astype('str') 
         count_invoices = int(df['Invoice'].value_counts())
         df[['GMV_Collected','TAX_Collected']] = df[['GMV_Collected','TAX_Collected']].astype('float')
         st.write(f'{count_invoices} Invoices to Flip')
