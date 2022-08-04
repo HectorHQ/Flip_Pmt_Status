@@ -33,7 +33,7 @@ def flip_to_paid(headers,list_orders,pmt_method):
         }
 
         payment_method(headers,qb_invoice_data,pmt_method)
-        st.write(f'{order}{", Pmt termns = "} {qb_invoice_data["payment_terms"]} {" Pmt Method -- "} {pmt_method}')
+        st.write(f'Order # {order}{", Pmt terms = "} {qb_invoice_data["payment_terms"]} {", Pmt Method -- "} {pmt_method}')
         if qb_invoice_data['payment_terms'] == 0 :
             UpdateOrder_COD_PAID(headers,qb_invoice_data)
         else:    
@@ -51,7 +51,7 @@ def flip_to_remitted(headers,list_orders):
             "id": order_data['data']['viewer']['allAdminAccountingOrders']['results'][0]['id'],
         }
 
-        st.write(f'{order}{"  "}{" Order Processed "} ')
+        st.write(f'Order # {order}{" - "}{" Order Processed "} ')
         UpdateOrder_REMITTED(headers,qb_invoice_data)
 
     st.success('Done!')    
