@@ -72,7 +72,7 @@ def flip_to_PARTIAL_PAID(headers,list_orders,GMV_Collected,TAX_Collected,pmt_met
             "id": order_data['data']['viewer']['allAdminAccountingOrders']['results'][0]['id'],
         }
 
-        amount_collected(headers,qb_invoice_data,GMV_Collected,TAX_Collected)
+        amount_collected(headers,qb_invoice_data,GMV_Collected[order],TAX_Collected[order])
         UpdateOrder_PARTIAL_PAID(headers,qb_invoice_data)
         payment_method(headers,qb_invoice_data,pmt_method)
         st.write(f'{order}{"  "}{" Order Processed "} ')
@@ -105,8 +105,10 @@ with col2:
             st.warning('Be sure all the information is correct before submitting.')
             submit_to_Partial_paid = st.button('Submit to Partial Paid')
             if submit_to_Partial_paid:
+                GMV_collected_dict = dict(zip(df['Invoice'],df['GMV_Collected']))
+                TAX_collected_dict = dict(zip(df['Invoice'],df['TAX_Collected']))
                 headers = connect_website(bearer_token)
-                flip_to_PARTIAL_PAID(headers,df['Invoice'],df['GMV_Collected'],df['TAX_Collected'],paymt_method)
+                flip_to_PARTIAL_PAID(headers,df['Invoice'],GMV_collected_dict,TAX_collected_dict,paymt_method)
         except NameError:
             st.write('Error, reach out to admin')        
             
