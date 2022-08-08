@@ -171,7 +171,24 @@ def amount_collected(headers,qb_invoice_data,gmv_collected,tax_collected):
     response = requests.post('https://api.getnabis.com/graphql/admin', headers=headers, json=json_data)
     return response.json()
 
+def UpdateOrder_SELF_COLLECTED(headers,qb_invoice_data):
 
+    json_data = {
+        'operationName': 'UpdateOrder',
+        'variables': {
+            'input': {
+                'id': qb_invoice_data['id'],
+                'paymentStatus': 'SELF_COLLECTED',
+                'writeOffReasons': [],
+            },
+            'isFromOrderForm': False,
+        },
+        'query': 'mutation UpdateOrder($input: UpdateOrderInput!, $isFromOrderForm: Boolean) {\n  updateOrder(input: $input, isFromOrderForm: $isFromOrderForm) {\n    changedOrder {\n      ...orderFragment\n      shipments {\n        ...shipmentFragment\n        __typename\n      }\n      __typename\n    }\n    __typename\n  }\n}\n\nfragment orderFragment on Order {\n  action\n  accountingNotes\n  additionalDiscount\n  adminNotes\n  createdAt\n  date\n  daysTillPaymentDue\n  paymentDueDate\n  totalAmountDue\n  requestedDaysTillPaymentDue\n  discount\n  distroFees\n  estimatedArrivalTimeAfter\n  estimatedArrivalTimeBefore\n  exciseTax\n  exciseTaxCollected\n  extraFees\n  gmv\n  gmvCollected\n  id\n  infoplus\n  internalNotes\n  irn\n  isArchived\n  manifestGDriveFileId\n  invoicesS3FileLink\n  name\n  notes\n  number\n  orgLicenseNum\n  paymentStatus\n  promotionsDiscount\n  siteLicenseNum\n  status\n  timeWindow\n  warehouseId\n  surcharge\n  mustPayPreviousBalance\n  nabisDiscount\n  issueReason\n  pricingFee\n  pricingPercentage\n  retailerConfirmationStatus\n  retailerNotes\n  creditMemo\n  netGmv\n  secondaryInfoplus\n  orderInventoryStatus\n  asnInventoryStatus\n  isEditableByBrand\n  isAtStartingStatus\n  shouldEnableOrderForm\n  isReceived\n  metrcWarehouseId\n  referrer\n  isSampleDemo\n  paymentTermsRequestStatus\n  brandManifestNotes\n  nabisManifestNotes\n  retailerManifestNotes\n  qrcodeS3FileLink\n  metrcManifestS3FileLink\n  isPrinted\n  isStaged\n  isCrossHubRetailTransfer\n  driverConfirmedAt\n  isSingleHubOrigin\n  firstShipmentId\n  lastShipmentId\n  lastNonReturnShipmentId\n  pickupDropoffWarehouseId\n  manufacturerOrgId\n  ACHAmountCollectedRetailer\n  ACHAmountPaidBrand\n  isExciseTaxable\n  orderLockdown {\n    ...orderLockdownFragment\n    __typename\n  }\n  __typename\n}\n\nfragment orderLockdownFragment on OrderLockdown {\n  id\n  createdAt\n  updatedAt\n  deletedAt\n  isArchived\n  orderEditLockdownTimestamp\n  __typename\n}\n\nfragment shipmentFragment on Shipment {\n  id\n  orderId\n  originLicensedLocationId\n  destinationLicensedLocationId\n  status\n  stagingAreaId\n  isUnloaded\n  unloaderId\n  isLoaded\n  loaderId\n  arrivalTime\n  departureTime\n  isShipped\n  vehicleId\n  driverId\n  previousShipmentId\n  nextShipmentId\n  infoplusOrderId\n  infoplusAsnId\n  infoplusOrderInventoryStatus\n  infoplusAsnInventoryStatus\n  createdAt\n  updatedAt\n  shipmentNumber\n  queueOrder\n  isStaged\n  isPrinted\n  arrivalTimeAfter\n  arrivalTimeBefore\n  fulfillability\n  pickers\n  shipmentType\n  intaken\n  outtaken\n  metrcWarehouseLicenseNumber\n  __typename\n}\n',
+    }
+
+    response = requests.post('https://api.getnabis.com/graphql/admin', headers=headers, json=json_data)
+    
+    return response.json()
 
 
 
@@ -184,3 +201,4 @@ if __name__ == '__main__':
     UpdateOrder_REMITTED()
     UpdateOrder_PARTIAL_PAID()
     amount_collected()
+    UpdateOrder_SELF_COLLECTED()
