@@ -62,6 +62,7 @@ def flip_to_remitted(headers,list_orders):
     st.success('Done!')
 
 def flip_to_self_collected(headers,list_orders):
+    st.spinner(text="Processing...")
     for order in list_orders:
         order_number = order
         order_data = all_admin_orders_accounting_page(headers,order_number)
@@ -71,7 +72,8 @@ def flip_to_self_collected(headers,list_orders):
         }
 
         UpdateOrder_SELF_COLLECTED(headers,qb_invoice_data)
-        st.write(f'{order}{"  "}{" Order Processed "} ')
+        #st.write(f'{order}{"  "}{" Order Processed "} ')
+        
     st.success('Done!')   
     
 def flip_to_PARTIAL_PAID(headers,list_orders,GMV_Collected,TAX_Collected,pmt_method):
