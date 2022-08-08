@@ -1,5 +1,5 @@
 import streamlit as st
-from flip_status_class import UpdateOrder_COD_PAID, UpdateOrder_NET_TERMS_PAID, all_admin_orders_accounting_page, payment_method, UpdateOrder_REMITTED, connect_website,UpdateOrder_PARTIAL_PAID, amount_collected
+from flip_status_class import UpdateOrder_COD_PAID, UpdateOrder_NET_TERMS_PAID, all_admin_orders_accounting_page, payment_method, UpdateOrder_REMITTED, connect_website,UpdateOrder_PARTIAL_PAID, amount_collected,UpdateOrder_SELF_COLLECTED
 import pandas as pd
 
 
@@ -19,7 +19,7 @@ with col1:
         df[['GMV_Collected','TAX_Collected']] = df[['GMV_Collected','TAX_Collected']].astype('float')
         st.write(f'{count_invoices[0]} Invoices to Flip')
         
-    pmt_status = st.radio('Select Payment Status',options=['Paid','Remitted','Partial Paid'],index=1)
+    pmt_status = st.radio('Select Payment Status',options=['Paid','Remitted','Partial Paid','Self Collected'],index=1)
     if pmt_status == 'Paid':
         paymt_method = st.radio('Choose Payment Method',options=['CASH','CHECK','EFT'])
     elif pmt_status == 'Partial Paid':
@@ -60,7 +60,19 @@ def flip_to_remitted(headers,list_orders):
         UpdateOrder_REMITTED(headers,qb_invoice_data)
 
     st.success('Done!')
-    
+
+def flip_to_self_collected(headers,list_orders):
+    for order in list_orders:
+        order_number = order
+        order_data = all_admin_orders_accounting_page(headers,order_number)
+        
+        qb_invoice_data = {
+            "id": order_data['data']['viewer']['allAdminAccountingOrders']['results'][0]['id'],
+        }
+
+        UpdateOrder_SELF_COLLECTED(headers,qb_invoice_data)
+        st.write(f'{order}{"  "}{" Order Processed "} ')
+    st.success('Done!')   
     
 def flip_to_PARTIAL_PAID(headers,list_orders,GMV_Collected,TAX_Collected,pmt_method):
 
@@ -116,7 +128,16 @@ with col2:
                 flip_to_PARTIAL_PAID(headers,df['Invoice'],GMV_collected_dict,TAX_collected_dict,paymt_method)
         except NameError:
             st.write('Error, reach out to admin')        
-            
+    elif pmt_status == 'Self Collected':
+        try:
+            st.title(f'You have selected {pmt_status} Status.')
+            st.warning('Be sure all the information is correct before submitting.')
+            submit_to_self_collected = st.button('Submit to Self Collected')
+            if submit_to_self_collected:
+                headers = connect_website(bearer_token)
+                flip_to_self_collected(headers,df['Invoice'])
+        except NameError:
+            st.write('Error, reach out to admin')        
             
             
     else:
