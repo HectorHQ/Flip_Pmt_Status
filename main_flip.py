@@ -70,9 +70,14 @@ def flip_to_PARTIAL_PAID(headers,list_orders,GMV_Collected,TAX_Collected,pmt_met
         
         qb_invoice_data = {
             "id": order_data['data']['viewer']['allAdminAccountingOrders']['results'][0]['id'],
+            "gmvCollected" : order_data['data']['viewer']['allAdminAccountingOrders']['results'][0]['gmvCollected'],
+            "exciseTaxCollected" : order_data['data']['viewer']['allAdminAccountingOrders']['results'][0]['exciseTaxCollected'],
         }
 
-        amount_collected(headers,qb_invoice_data,GMV_Collected[order],TAX_Collected[order])
+        gmv_collected = float(qb_invoice_data['gmv_collected'] + GMV_Collected[order])
+        tax_collected = float(qb_invoice_data['exciseTaxCollected'] + TAX_Collected[order])
+        
+        amount_collected(headers,qb_invoice_data,gmv_collected,tax_collected)
         UpdateOrder_PARTIAL_PAID(headers,qb_invoice_data)
         payment_method(headers,qb_invoice_data,pmt_method)
         st.write(f'{order}{"  "}{" Order Processed "} ')
