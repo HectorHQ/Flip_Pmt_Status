@@ -190,6 +190,20 @@ def UpdateOrder_SELF_COLLECTED(headers,qb_invoice_data):
     
     return response.json()
 
+def update_Brand_fee_90_days(headers,invoice_data):
+    json_data = {
+        'operationName': 'UpdateBrandFeesCollection',
+        'variables': {
+            'id': invoice_data['id'],
+            'collectionStatus': 'COLLECTED',
+            'notes': '',
+        },
+        'query': 'mutation UpdateBrandFeesCollection($id: ID!, $collectionStatus: BrandFeesCollectionCollectionStatusEnum, $notes: String!) {\n  updateBrandFeesCollection(id: $id, collectionStatus: $collectionStatus, notes: $notes)\n}\n',
+    }
+
+    response = requests.post('https://api.getnabis.com/graphql/admin', headers=headers, json=json_data)
+    return response.json()
+
 
 
 if __name__ == '__main__':
@@ -202,3 +216,4 @@ if __name__ == '__main__':
     UpdateOrder_PARTIAL_PAID()
     amount_collected()
     UpdateOrder_SELF_COLLECTED()
+    update_Brand_fee_90_days()
