@@ -21,7 +21,7 @@ with col1:
        
     pmt_status = st.radio('Select Payment Status',options=['Paid','Remitted','Partial Paid','Self Collected','90 Days Fees Collected'],index=1)
     if pmt_status == 'Paid':
-        paymt_method = st.radio('Choose Payment Method',options=['CASH','CHECK','EFT'])
+        paymt_method = st.radio('Choose Payment Method',options=['CASH','CHECK','EFT','OTHER'])
     elif pmt_status == 'Partial Paid':
         paymt_method = st.radio('Choose Payment Method',options=['CASH','CHECK','EFT'])
 
