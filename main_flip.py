@@ -24,6 +24,8 @@ with col1:
         paymt_method = st.radio('Choose Payment Method',options=['CASH','CHECK','EFT','OTHER'])
     elif pmt_status == 'Partial Paid':
         paymt_method = st.radio('Choose Payment Method',options=['CASH','CHECK','EFT'])
+    elif pmt_status == 'Self Collected':
+        paymt_method = st.radio('Choose Payment Method',options=['OTHER'])    
 
 
 def flip_to_paid(headers,list_orders,pmt_method):
@@ -65,7 +67,8 @@ def flip_to_self_collected(headers,list_orders):
         qb_invoice_data = {
             "id": order_data['data']['viewer']['allAdminAccountingOrders']['results'][0]['id'],
         }
-
+        
+        payment_method(headers,qb_invoice_data,pmt_method)
         UpdateOrder_SELF_COLLECTED(headers,qb_invoice_data)
         st.write(f'{order}{"  "}{" Order Processed "} ')        
 
