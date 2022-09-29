@@ -85,7 +85,7 @@ def flip_to_PARTIAL_PAID(headers,list_orders,GMV_Collected,TAX_Collected,pmt_met
             "exciseTaxCollected" : order_data['data']['viewer']['allAdminAccountingOrders']['results'][0]['exciseTaxCollected'],
         }
 
-        gmv_collected = float(qb_invoice_data['gmvcollected'] + GMV_Collected[order])
+        gmv_collected = float(qb_invoice_data['gmvCollected'] + GMV_Collected[order])
         tax_collected = float(qb_invoice_data['exciseTaxCollected'] + TAX_Collected[order])
 
         amount_collected(headers,qb_invoice_data,gmv_collected,tax_collected)
