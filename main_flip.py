@@ -60,7 +60,7 @@ def flip_to_remitted(headers,list_orders):
         UpdateOrder_REMITTED(headers,qb_invoice_data)
         st.write(f'{order}{"  "}{" Order Processed "} ')
 
-def flip_to_self_collected(headers,list_orders):
+def flip_to_self_collected(headers,list_orders,pmt_method):
     for order in list_orders:
         order_number = order
         order_data = all_admin_orders_accounting_page(headers,order_number)
@@ -151,7 +151,7 @@ with col2:
             submit_to_self_collected = st.button('Submit to Self Collected')
             if submit_to_self_collected:
                 headers = connect_website(bearer_token)
-                flip_to_self_collected(headers,df['Invoice'])
+                flip_to_self_collected(headers,df['Invoice'],paymt_method)
         except NameError:
             st.write('Error, reach out to admin')        
 
