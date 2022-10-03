@@ -69,6 +69,8 @@ def flip_to_self_collected(headers,list_orders):
             "id": order_data['data']['viewer']['allAdminAccountingOrders']['results'][0]['id'],
         }
         
+        st.write(f'{order}{"  "}{" Order Processed "} ')
+        st.write(f'{qb_invoice_data}')
         payment_method(headers,qb_invoice_data,pmt_method)
         UpdateOrder_SELF_COLLECTED(headers,qb_invoice_data)
         st.write(f'{order}{"  "}{" Order Processed "} ')        
