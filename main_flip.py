@@ -1,6 +1,7 @@
 import streamlit as st
 from flip_status_class import UpdateOrder_COD_PAID, UpdateOrder_NET_TERMS_PAID, all_admin_orders_accounting_page, payment_method, UpdateOrder_REMITTED, connect_website, UpdateOrder_PARTIAL_PAID, amount_collected, UpdateOrder_SELF_COLLECTED,update_Brand_fee_90_days
 import pandas as pd
+pd.set_option('mode.chained_assignment', None)
 
 
 # Streamit App title
@@ -15,7 +16,7 @@ with col1:
         df = pd.read_excel(file,engine='openpyxl')
         df['Invoice'] = df['Invoice'].astype('str') 
         count_invoices = df.shape
-        df[['GMV_Collected','TAX_Collected']].fillna(0)
+        df[['GMV_Collected','TAX_Collected']].fillna(0,inplace=True)
         df[['GMV_Collected','TAX_Collected']] = df[['GMV_Collected','TAX_Collected']].astype('float')
         st.write(f'{count_invoices[0]} Invoices to Flip')
        
