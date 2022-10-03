@@ -16,7 +16,7 @@ with col1:
         df = pd.read_excel(file,engine='openpyxl')
         df['Invoice'] = df['Invoice'].astype('str') 
         count_invoices = df.shape
-        df[['GMV_Collected','TAX_Collected']].fillna(0,inplace=True)
+        df[['GMV_Collected','TAX_Collected']] = df[['GMV_Collected','TAX_Collected']].fillna(0,inplace=True)
         df[['GMV_Collected','TAX_Collected']] = df[['GMV_Collected','TAX_Collected']].astype('float')
         st.write(f'{count_invoices[0]} Invoices to Flip')
        
@@ -151,7 +151,7 @@ with col2:
                 headers = connect_website(bearer_token)
                 flip_to_self_collected(headers,df['Invoice'])
         except NameError:
-            st.write(NameError)        
+            st.write('Error, reach out to admin')        
 
     elif pmt_status == '90 Days Fees Collected':
         try:
