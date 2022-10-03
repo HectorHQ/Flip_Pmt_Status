@@ -151,7 +151,7 @@ with col2:
                 headers = connect_website(bearer_token)
                 flip_to_self_collected(headers,df['Invoice'])
         except NameError:
-            st.write('Error, reach out to admin')        
+            st.write(NameError)        
 
     elif pmt_status == '90 Days Fees Collected':
         try:
