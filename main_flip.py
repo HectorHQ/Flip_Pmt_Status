@@ -144,7 +144,7 @@ with col2:
 
     elif pmt_status == 'Self Collected':
         try:
-            st.title(f'You have selected {pmt_status} Status.')
+            st.title(f'You have selected {pmt_status} Status, and payment method {paymt_method}')
             st.warning('Be sure all the information is correct before submitting.')
             submit_to_self_collected = st.button('Submit to Self Collected')
             if submit_to_self_collected:
