@@ -102,8 +102,8 @@ def flip_to_PARTIAL_PAID(headers,list_orders,GMV_Collected,TAX_Collected,pmt_met
         tax_collected = float(qb_invoice_data['exciseTaxCollected'] + TAX_Collected[order])
 
         amount_collected(headers,qb_invoice_data,gmv_collected,tax_collected)
-        UpdateOrder_PARTIAL_PAID(headers,qb_invoice_data)
         payment_method(headers,qb_invoice_data,pmt_method)
+        UpdateOrder_PARTIAL_PAID(headers,qb_invoice_data)
         st.write(f'{order}{"  "}{" Order Processed "} ')
 
 def flip_90Days_fees_to_collected(headers,list_orders):
