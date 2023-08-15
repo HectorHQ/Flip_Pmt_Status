@@ -120,7 +120,7 @@ def flip_90Days_fees_to_collected(headers,list_orders):
         update_Brand_fee_90_days(headers,qb_invoice_data)
         st.write(f'{order}{"  "}{" Order Processed "} ')
         
- def flip_to_write_off(headers,list_orders,defunct):
+def flip_to_write_off(headers,list_orders,defunct):
     for order in list_orders:
         order_number = order
         order_data = all_admin_orders_accounting_page(headers,order_number)
