@@ -1,5 +1,5 @@
 import streamlit as st
-from flip_status_class import UpdateOrder_COD_PAID, UpdateOrder_NET_TERMS_PAID, all_admin_orders_accounting_page, payment_method, UpdateOrder_REMITTED, connect_website, UpdateOrder_PARTIAL_PAID, amount_collected, UpdateOrder_SELF_COLLECTED,update_Brand_fee_90_days,UpdateOrder_PROCESSING
+from flip_status_class import UpdateOrder_COD_PAID, UpdateOrder_NET_TERMS_PAID, all_admin_orders_accounting_page, payment_method, UpdateOrder_REMITTED, connect_website, UpdateOrder_PARTIAL_PAID, amount_collected, UpdateOrder_SELF_COLLECTED,update_Brand_fee_90_days,UpdateOrder_PROCESSING,update_write_off
 import pandas as pd
 pd.set_option('mode.chained_assignment', None)
 
@@ -20,13 +20,15 @@ with col1:
         df[['GMV_Collected','TAX_Collected']] = df[['GMV_Collected','TAX_Collected']].astype('float')
         st.write(f'{count_invoices[0]} Invoices to Flip')
        
-    pmt_status = st.radio('Select Payment Status',options=['Paid','Remitted','Partial Paid','Self Collected','90 Days Fees Collected','Processing'],index=1)
+    pmt_status = st.radio('Select Payment Status',options=['Paid','Remitted','Partial Paid','Self Collected','90 Days Fees Collected','Processing','Write Off'],index=1)
     if pmt_status == 'Paid':
         paymt_method = st.radio('Choose Payment Method',options=['CASH','CHECK','EFT','OTHER'])
     elif pmt_status == 'Partial Paid':
         paymt_method = st.radio('Choose Payment Method',options=['CASH','CHECK','EFT'])
     elif pmt_status == 'Self Collected':
-        paymt_method = st.radio('Choose Payment Method',options=['OTHER'])    
+        paymt_method = st.radio('Choose Payment Method',options=['OTHER'])
+    elif pmt_status == 'Write Off':
+        defunct = st.radio('Choose defunct',options=['DEFUNCT_RETAILER','DEFUNCT_BRAND'])        
 
 
 def flip_to_paid(headers,list_orders,pmt_method):
@@ -118,7 +120,17 @@ def flip_90Days_fees_to_collected(headers,list_orders):
         update_Brand_fee_90_days(headers,qb_invoice_data)
         st.write(f'{order}{"  "}{" Order Processed "} ')
         
-          
+ def flip_to_write_off(headers,list_orders,defunct):
+    for order in list_orders:
+        order_number = order
+        order_data = all_admin_orders_accounting_page(headers,order_number)
+        
+        qb_invoice_data = {
+            "id": order_data['data']['viewer']['allAdminAccountingOrders']['results'][0]['id'],
+        }
+
+        update_write_off(headers,qb_invoice_data,defunct)
+        st.write(f'{order}{"  "}{" Order Processed "} ')           
 
 
 
@@ -184,6 +196,17 @@ with col2:
             if submit_90days_fees_to_collected:
                 headers = connect_website(bearer_token)
                 flip_90Days_fees_to_collected(headers,df['Invoice'])
+        except NameError:
+            st.write('Error, reach out to admin')
+
+    elif pmt_status == 'Write Off':
+        try:
+            st.title(f'You have selected {pmt_status} Status.')
+            st.warning('Be sure all the information is correct before submitting.')
+            submit_to_write_off = st.button('Submit to write off')
+            if submit_to_write_off:
+                headers = connect_website(bearer_token)
+                flip_to_write_off(headers,df['Invoice'],defunct)
         except NameError:
             st.write('Error, reach out to admin')
 
