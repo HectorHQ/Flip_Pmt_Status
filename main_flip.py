@@ -1,5 +1,5 @@
 import streamlit as st
-from flip_status_class import UpdateOrder_COD_PAID, UpdateOrder_NET_TERMS_PAID, all_admin_orders_accounting_page, payment_method, UpdateOrder_REMITTED, connect_website, UpdateOrder_PARTIAL_PAID, amount_collected, UpdateOrder_SELF_COLLECTED,update_Brand_fee_90_days,UpdateOrder_PROCESSING,update_write_off
+from flip_status_class import UpdateOrder_COD_PAID, UpdateOrder_NET_TERMS_PAID, all_admin_orders_accounting_page, payment_method, UpdateOrder_REMITTED, connect_website, UpdateOrder_PARTIAL_PAID, amount_collected, UpdateOrder_SELF_COLLECTED, update_Brand_fee_90_days, UpdateOrder_PROCESSING, update_write_off, UpdateOrder_THIRD_PARTY_COLLECTIONS
 import pandas as pd
 pd.set_option('mode.chained_assignment', None)
 
@@ -20,7 +20,7 @@ with col1:
         df[['GMV_Collected','TAX_Collected']] = df[['GMV_Collected','TAX_Collected']].astype('float')
         st.write(f'{count_invoices[0]} Invoices to Flip')
        
-    pmt_status = st.radio('Select Payment Status',options=['Paid','Remitted','Partial Paid','Self Collected','90 Days Fees Collected','Processing','Write Off'],index=1)
+    pmt_status = st.radio('Select Payment Status',options=['Paid','Remitted','Partial Paid','Self Collected','90 Days Fees Collected','Processing','Write Off','Third Party Collections'],index=1)
     if pmt_status == 'Paid':
         paymt_method = st.radio('Choose Payment Method',options=['CASH','CHECK','EFT','OTHER'])
     elif pmt_status == 'Partial Paid':
@@ -86,6 +86,20 @@ def flip_to_Processing(headers,list_orders):
 
         UpdateOrder_PROCESSING(headers,qb_invoice_data)
         st.write(f'{order}{"  "}{" Order Processed "} ')        
+
+
+def flip_to_third_party_collections(headers,list_orders):
+    for order in list_orders:
+        order_number = order
+        order_data = all_admin_orders_accounting_page(headers,order_number)
+        
+        qb_invoice_data = {
+            "id": order_data['data']['viewer']['allAdminAccountingOrders']['results'][0]['id'],
+        }
+
+        UpdateOrder_THIRD_PARTY_COLLECTIONS(headers,qb_invoice_data)
+        st.write(f'{order}{"  "}{" Order Processed "} ')        
+
 
 
 def flip_to_PARTIAL_PAID(headers,list_orders,GMV_Collected,TAX_Collected,pmt_method):
@@ -187,6 +201,18 @@ with col2:
                 flip_to_Processing(headers,df['Invoice'])
         except NameError:
             st.write('Error, reach out to admin')        
+
+    elif pmt_status == 'Third Party Collections':
+        try:
+            st.title(f'You have selected {pmt_status} Status.')
+            st.warning('Be sure all the information is correct before submitting.')
+            submit_to_third_party = st.button('Submit to Processing')
+            if submit_to_third_party:
+                headers = connect_website(bearer_token)
+                flip_to_third_party_collections(headers,df['Invoice'])
+        except NameError:
+            st.write('Error, reach out to admin')        
+
 
     elif pmt_status == '90 Days Fees Collected':
         try:
