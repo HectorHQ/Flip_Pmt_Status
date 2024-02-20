@@ -234,7 +234,7 @@ with col2:
                 headers = connect_website(bearer_token)
                 flip_to_write_off(headers,df['Invoice'],defunct)
         except NameError:
-            st.write('Error, reach out to admin')
+            st.write(f'Error {NameError}, reach out to admin')
 
 
     else:
