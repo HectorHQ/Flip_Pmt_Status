@@ -232,6 +232,9 @@ with col2:
             submit_to_write_off = st.button('Submit to write off')
             if submit_to_write_off:
                 headers = connect_website(bearer_token)
+                headers
+                defunct
+                df['Invoice']
                 flip_to_write_off(headers,df['Invoice'],defunct)
         except NameError:
             st.write(f'Error {NameError}, reach out to admin')
