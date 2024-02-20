@@ -230,7 +230,7 @@ def update_write_off(headers,qb_invoice_data,defunct):
         'operationName': 'UpdateOrder',
         'variables': {
             'input': {
-                'id': invoice_data['id'],
+                'id': qb_invoice_data['id'],
                 'paymentStatus': 'WRITE_OFF',
                 'writeOffReasons': [
                     defunct,
