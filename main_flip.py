@@ -142,7 +142,7 @@ def flip_to_write_off(headers,list_orders,defunct):
         qb_invoice_data = {
             "id": order_data['data']['viewer']['allAdminAccountingOrders']['results'][0]['id'],
         }
-        qb_invoice_data
+        
         update_write_off(headers,qb_invoice_data,defunct)
         st.write(f'{order}{"  "}{" Order Processed "} ')           
 
