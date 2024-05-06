@@ -180,6 +180,7 @@ with col2:
             submit_to_paid = st.button('Submit to Paid')
             if submit_to_paid:
                 headers = connect_website(bearer_token)
+                headers
                 flip_to_paid(headers,df['Invoice'],paymt_method)
         except Exception as e:
             st.write(f'Error {e}, reach out to admin')
