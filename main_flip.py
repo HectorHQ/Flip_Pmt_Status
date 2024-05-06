@@ -178,8 +178,8 @@ with col2:
             if submit_to_paid:
                 headers = connect_website(bearer_token)
                 flip_to_paid(headers,df['Invoice'],paymt_method)
-        except requests.exceptions.HTTPError as e:
-            st.write(f'Error {e.response.text}, reach out to admin')
+        except Exception as e:
+            st.write(f'Error {e}, reach out to admin')
 
     elif pmt_status == 'Partial Paid':
         try:
