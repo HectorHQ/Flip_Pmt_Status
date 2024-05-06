@@ -43,9 +43,9 @@ def flip_to_paid(headers,list_orders,pmt_method):
 
         payment_method(headers,qb_invoice_data,pmt_method)
         if qb_invoice_data['payment_terms'] == 0 :
-            st.write(UpdateOrder_COD_PAID(headers,qb_invoice_data))
+            UpdateOrder_COD_PAID(headers,qb_invoice_data)
         else:    
-            st.write(UpdateOrder_NET_TERMS_PAID(headers,qb_invoice_data))
+            UpdateOrder_NET_TERMS_PAID(headers,qb_invoice_data)
 
         st.write(f'{order}{", Pmt terms = "} {qb_invoice_data["payment_terms"]} {" Pmt Method -- "} {pmt_method}')
   
@@ -178,8 +178,8 @@ with col2:
             if submit_to_paid:
                 headers = connect_website(bearer_token)
                 flip_to_paid(headers,df['Invoice'],paymt_method)
-        except NameError:
-            st.write('Error, reach out to admin')
+        except Exception as e:
+            st.write(f'Error {e}, reach out to admin')
 
     elif pmt_status == 'Partial Paid':
         try:
