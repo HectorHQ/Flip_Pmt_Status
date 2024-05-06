@@ -34,8 +34,8 @@ with col1:
 def flip_to_paid(headers,list_orders,pmt_method):
     for order in list_orders:
         order_number = order
+        
         order_data = all_admin_orders_accounting_page(headers,order_number)
-        order_data
         
         qb_invoice_data = {
             "id": order_data['data']['viewer']['allAdminAccountingOrders']['results'][0]['id'],
@@ -180,7 +180,6 @@ with col2:
             submit_to_paid = st.button('Submit to Paid')
             if submit_to_paid:
                 headers = connect_website(bearer_token)
-                headers
                 flip_to_paid(headers,df['Invoice'],paymt_method)
         except Exception as e:
             st.write(f'Error {e}, reach out to admin')
