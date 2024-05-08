@@ -187,8 +187,11 @@ with col2:
             st.warning('Be sure all the information is correct before submitting.')
             submit_to_paid = st.button('Submit to Paid')
             if submit_to_paid:
-                headers = connect_website(bearer_token)
-                flip_to_paid(headers,df['Invoice'],paymt_method)
+                try:
+                    headers = connect_website(bearer_token)
+                    flip_to_paid(headers,df['Invoice'],paymt_method)
+                except Exception as e:
+                    st.write(f'Error {e}, reach out to admin')
         except Exception as e:
             st.write(f'Error {e}, reach out to admin')
 
