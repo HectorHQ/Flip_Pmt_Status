@@ -44,7 +44,9 @@ def flip_to_paid(headers,list_orders,pmt_method):
         }
 
 
-        payment_method(headers,qb_invoice_data,pmt_method)
+        update_pmt_method = payment_method(headers,qb_invoice_data,pmt_method)
+        update_pmt_method
+        
         if qb_invoice_data['payment_terms'] == 0 :
             UpdateOrder_COD_PAID(headers,qb_invoice_data)
         else:    
