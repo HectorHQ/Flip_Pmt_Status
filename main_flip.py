@@ -36,6 +36,7 @@ def flip_to_paid(headers,list_orders,pmt_method):
         order_number = order
         
         order_data = all_admin_orders_accounting_page(headers,order_number)
+        st.write('response from "operationName": "AllAdminOrdersAccountingPage"')
         order_data
         
         qb_invoice_data = {
@@ -45,6 +46,7 @@ def flip_to_paid(headers,list_orders,pmt_method):
 
 
         update_pmt_method = payment_method(headers,qb_invoice_data,pmt_method)
+        st.write('response from "operationName": "updateOrder"')
         update_pmt_method
         
         if qb_invoice_data['payment_terms'] == 0 :
