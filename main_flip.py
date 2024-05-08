@@ -43,7 +43,6 @@ def flip_to_paid(headers,list_orders,pmt_method):
             "payment_terms" : order_data['data']['viewer']['allAdminAccountingOrders']['results'][0]['daysTillPaymentDue']
         }
 
-        qb_invoice_data
 
         payment_method(headers,qb_invoice_data,pmt_method)
         if qb_invoice_data['payment_terms'] == 0 :
