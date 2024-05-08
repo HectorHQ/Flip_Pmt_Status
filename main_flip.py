@@ -36,6 +36,7 @@ def flip_to_paid(headers,list_orders,pmt_method):
         order_number = order
         
         order_data = all_admin_orders_accounting_page(headers,order_number)
+        order_data
         
         qb_invoice_data = {
             "id": order_data['data']['viewer']['allAdminAccountingOrders']['results'][0]['id'],
