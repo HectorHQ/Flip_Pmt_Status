@@ -36,9 +36,7 @@ def flip_to_paid(headers,list_orders,pmt_method):
         order_number = order
         headers = connect_website(bearer_token)
         order_data = all_admin_orders_accounting_page(headers,order_number)
-        st.write('response from "operationName": "AllAdminOrdersAccountingPage"')
-        order_data
-        
+      
         qb_invoice_data = {
             "id": order_data['data']['viewer']['allAdminAccountingOrders']['results'][0]['id'],
             "payment_terms" : order_data['data']['viewer']['allAdminAccountingOrders']['results'][0]['daysTillPaymentDue']
@@ -46,17 +44,14 @@ def flip_to_paid(headers,list_orders,pmt_method):
 
 
         update_pmt_method = payment_method(headers,qb_invoice_data,pmt_method)
-        st.write('response from "operationName": "updateOrder" For Payment Method')
-        update_pmt_method
+       
         
         if qb_invoice_data['payment_terms'] == 0 :
             update_pmt_status_COD = UpdateOrder_COD_PAID(headers,qb_invoice_data)
-            st.write('response from "operationName": "updateOrder" For Payment Status')
-            update_pmt_status_COD
+      
         else:    
             update_pmt_status_NTP = UpdateOrder_NET_TERMS_PAID(headers,qb_invoice_data)
-            st.write('response from "operationName": "updateOrder" For Payment Status')
-            update_pmt_status_NTP
+      
 
         st.write(f'{order}{", Pmt terms = "} {qb_invoice_data["payment_terms"]} {" Pmt Method -- "} {pmt_method}')
   
