@@ -34,7 +34,7 @@ with col1:
 def flip_to_paid(headers,list_orders,pmt_method):
     for order in list_orders:
         order_number = order
-        
+        headers = connect_website(bearer_token)
         order_data = all_admin_orders_accounting_page(headers,order_number)
         st.write('response from "operationName": "AllAdminOrdersAccountingPage"')
         order_data
