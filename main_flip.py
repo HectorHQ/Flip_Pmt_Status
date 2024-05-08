@@ -46,13 +46,17 @@ def flip_to_paid(headers,list_orders,pmt_method):
 
 
         update_pmt_method = payment_method(headers,qb_invoice_data,pmt_method)
-        st.write('response from "operationName": "updateOrder"')
+        st.write('response from "operationName": "updateOrder" For Payment Method')
         update_pmt_method
         
         if qb_invoice_data['payment_terms'] == 0 :
-            UpdateOrder_COD_PAID(headers,qb_invoice_data)
+            update_pmt_status_COD = UpdateOrder_COD_PAID(headers,qb_invoice_data)
+            st.write('response from "operationName": "updateOrder" For Payment Status')
+            update_pmt_status_COD
         else:    
-            UpdateOrder_NET_TERMS_PAID(headers,qb_invoice_data)
+            update_pmt_status_NTP = UpdateOrder_NET_TERMS_PAID(headers,qb_invoice_data)
+            st.write('response from "operationName": "updateOrder" For Payment Status')
+            update_pmt_status_NTP
 
         st.write(f'{order}{", Pmt terms = "} {qb_invoice_data["payment_terms"]} {" Pmt Method -- "} {pmt_method}')
   
