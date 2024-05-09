@@ -58,7 +58,7 @@ def all_admin_orders_accounting_page(headers,order_number):
     )
     status = response.status_code
     text_response = response.text
-    return status,text_response
+    return response,status,text_response
 
 
 
