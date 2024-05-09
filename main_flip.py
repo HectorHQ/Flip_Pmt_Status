@@ -35,23 +35,25 @@ def flip_to_paid(headers,list_orders,pmt_method):
     for order in list_orders:
         order_number = order
         headers = connect_website(bearer_token)
-        order_data = all_admin_orders_accounting_page(headers,order_number)
-      
+        order_data,status,response_text = all_admin_orders_accounting_page(headers,order_number)
+
+        order_data = order_data.json()
+        
         qb_invoice_data = {
             "id": order_data['data']['viewer']['allAdminAccountingOrders']['results'][0]['id'],
             "payment_terms" : order_data['data']['viewer']['allAdminAccountingOrders']['results'][0]['daysTillPaymentDue']
         }
 
 
-        update_pmt_method = payment_method(headers,qb_invoice_data,pmt_method)
+        status,response_text = payment_method(headers,qb_invoice_data,pmt_method)
        
         
         if qb_invoice_data['payment_terms'] == 0 :
-            update_pmt_status_COD = UpdateOrder_COD_PAID(headers,qb_invoice_data)
-      
+            status,response_text = UpdateOrder_COD_PAID(headers,qb_invoice_data)
+            st.write(f'{order} "request status code" {status}') 
         else:    
-            update_pmt_status_NTP = UpdateOrder_NET_TERMS_PAID(headers,qb_invoice_data)
-      
+            status,response_text = UpdateOrder_NET_TERMS_PAID(headers,qb_invoice_data)
+            st.write(f'{order} "request status code" {status}')  
 
         st.write(f'{order}{", Pmt terms = "} {qb_invoice_data["payment_terms"]} {" Pmt Method -- "} {pmt_method}')
   
@@ -59,51 +61,63 @@ def flip_to_paid(headers,list_orders,pmt_method):
 def flip_to_remitted(headers,list_orders):
     for order in list_orders:
         order_number = order
-        order_data = all_admin_orders_accounting_page(headers,order_number)
+        order_data,status,response_text = all_admin_orders_accounting_page(headers,order_number)
+
+        order_data = order_data.json()
         
         qb_invoice_data = {
             "id": order_data['data']['viewer']['allAdminAccountingOrders']['results'][0]['id'],
         }
 
-        UpdateOrder_REMITTED(headers,qb_invoice_data)
+        status,response_text = UpdateOrder_REMITTED(headers,qb_invoice_data)
+        st.write(f'{order} "request status code" {status}')
         st.write(f'{order}{"  "}{" Order Processed "} ')
 
 def flip_to_self_collected(headers,list_orders,pmt_method):
     for order in list_orders:
         order_number = order
-        order_data = all_admin_orders_accounting_page(headers,order_number)
+        order_data,status,response_text = all_admin_orders_accounting_page(headers,order_number)
+
+        order_data = order_data.json()
         
         qb_invoice_data = {
             "id": order_data['data']['viewer']['allAdminAccountingOrders']['results'][0]['id'],
         }
         
-        payment_method(headers,qb_invoice_data,pmt_method)
-        UpdateOrder_SELF_COLLECTED(headers,qb_invoice_data)
+        status,response_text = payment_method(headers,qb_invoice_data,pmt_method)
+        status,response_text = UpdateOrder_SELF_COLLECTED(headers,qb_invoice_data)
+        st.write(f'{order} "request status code" {status}')
         st.write(f'{order}{"  "}{" Order Processed "} ')
         
 def flip_to_Processing(headers,list_orders):
     for order in list_orders:
         order_number = order
-        order_data = all_admin_orders_accounting_page(headers,order_number)
+        order_data,status,response_text = all_admin_orders_accounting_page(headers,order_number)
+
+        order_data = order_data.json()
         
         qb_invoice_data = {
             "id": order_data['data']['viewer']['allAdminAccountingOrders']['results'][0]['id'],
         }
 
-        UpdateOrder_PROCESSING(headers,qb_invoice_data)
+        status,response_text = UpdateOrder_PROCESSING(headers,qb_invoice_data)
+        st.write(f'{order} "request status code" {status}')
         st.write(f'{order}{"  "}{" Order Processed "} ')        
 
 
 def flip_to_Unpaid(headers,list_orders):
     for order in list_orders:
         order_number = order
-        order_data = all_admin_orders_accounting_page(headers,order_number)
+        order_data,status,response_text = all_admin_orders_accounting_page(headers,order_number)
+
+        order_data = order_data.json()
         
         qb_invoice_data = {
             "id": order_data['data']['viewer']['allAdminAccountingOrders']['results'][0]['id'],
         }
 
-        UpdateOrder_UNPAID(headers,qb_invoice_data)
+        status,response_text = UpdateOrder_UNPAID(headers,qb_invoice_data)
+        st.write(f'{order} "request status code" {status}')
         st.write(f'{order}{"  "}{" Order Processed "} ')        
         
 
@@ -111,13 +125,16 @@ def flip_to_Unpaid(headers,list_orders):
 def flip_to_third_party_collections(headers,list_orders):
     for order in list_orders:
         order_number = order
-        order_data = all_admin_orders_accounting_page(headers,order_number)
+        order_data,status,response_text = all_admin_orders_accounting_page(headers,order_number)
+
+        order_data = order_data.json()
         
         qb_invoice_data = {
             "id": order_data['data']['viewer']['allAdminAccountingOrders']['results'][0]['id'],
         }
 
-        UpdateOrder_THIRD_PARTY_COLLECTIONS(headers,qb_invoice_data)
+        status,response_text = UpdateOrder_THIRD_PARTY_COLLECTIONS(headers,qb_invoice_data)
+        st.write(f'{order} "request status code" {status}')
         st.write(f'{order}{"  "}{" Order Processed "} ')        
 
 
@@ -126,7 +143,9 @@ def flip_to_PARTIAL_PAID(headers,list_orders,GMV_Collected,TAX_Collected,pmt_met
 
     for order in list_orders:
         order_number = order
-        order_data = all_admin_orders_accounting_page(headers,order_number)
+        order_data,status,response_text = all_admin_orders_accounting_page(headers,order_number)
+
+        order_data = order_data.json()
         
         qb_invoice_data = {
             "id": order_data['data']['viewer']['allAdminAccountingOrders']['results'][0]['id'],
@@ -137,33 +156,39 @@ def flip_to_PARTIAL_PAID(headers,list_orders,GMV_Collected,TAX_Collected,pmt_met
         gmv_collected = float(qb_invoice_data['gmvCollected'] + GMV_Collected[order])
         tax_collected = float(qb_invoice_data['exciseTaxCollected'] + TAX_Collected[order])
 
-        amount_collected(headers,qb_invoice_data,gmv_collected,tax_collected)
-        payment_method(headers,qb_invoice_data,pmt_method)
-        UpdateOrder_PARTIAL_PAID(headers,qb_invoice_data)
+        status,response_text = amount_collected(headers,qb_invoice_data,gmv_collected,tax_collected)
+        status,response_text = payment_method(headers,qb_invoice_data,pmt_method)
+        status,response_text = UpdateOrder_PARTIAL_PAID(headers,qb_invoice_data)
+        st.write(f'{order} "request status code" {status}')
         st.write(f'{order}{"  "}{" Order Processed "} ')
 
 def flip_90Days_fees_to_collected(headers,list_orders):
     for order in list_orders:
         order_number = order
-        order_data = all_admin_orders_accounting_page(headers,order_number)
+        order_data,status,response_text = all_admin_orders_accounting_page(headers,order_number)
+
+        order_data = order_data.json()
         
         qb_invoice_data = {
             "id": order_data['data']['viewer']['allAdminAccountingOrders']['results'][0]['brandFeesCollection']['id'],
         }
 
-        update_Brand_fee_90_days(headers,qb_invoice_data)
+        status,response_text = update_Brand_fee_90_days(headers,qb_invoice_data)
+        st.write(f'{order} "request status code" {status}')
         st.write(f'{order}{"  "}{" Order Processed "} ')
         
 def flip_to_write_off(headers,list_orders,defunct):
     for order in list_orders:
         order_number = order
-        order_data = all_admin_orders_accounting_page(headers,order_number)
-        
+        order_data,status,response_text = all_admin_orders_accounting_page(headers,order_number)
+
+        order_data = order_data.json()
         qb_invoice_data = {
             "id": order_data['data']['viewer']['allAdminAccountingOrders']['results'][0]['id'],
         }
         
-        update_write_off(headers,qb_invoice_data,defunct)
+        status,response_text = update_write_off(headers,qb_invoice_data,defunct)
+        st.write(f'{order} "request status code" {status}')
         st.write(f'{order}{"  "}{" Order Processed "} ')           
 
 
@@ -182,11 +207,9 @@ with col2:
             st.warning('Be sure all the information is correct before submitting.')
             submit_to_paid = st.button('Submit to Paid')
             if submit_to_paid:
-                try:
-                    headers = connect_website(bearer_token)
-                    flip_to_paid(headers,df['Invoice'],paymt_method)
-                except Exception as e:
-                    st.write(f'Error {e}, reach out to admin')
+               
+                headers = connect_website(bearer_token)
+                flip_to_paid(headers,df['Invoice'],paymt_method)
         except Exception as e:
             st.write(f'Error {e}, reach out to admin')
 
